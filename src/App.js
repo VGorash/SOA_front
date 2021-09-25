@@ -1,23 +1,12 @@
-import logo from './logo.svg';
-import './App.css';
+import MainTable from "./components/MainTable";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="pb-2 mt-4 mb-2 border-bottom">
+          <h1>Лабораторная работа 1. Гораш В.И.</h1>
+      </div>
+        <MainTable />
     </div>
   );
 }
