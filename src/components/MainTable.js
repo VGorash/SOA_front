@@ -1,5 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons'
 
 class MainTable extends React.Component{
 
@@ -28,25 +30,31 @@ class MainTable extends React.Component{
             <table className="table table-hover">
                 <thead>
                     <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Coordinates</th>
-                        <th scope="col">Creation Date</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Comment</th>
-                        <th scope="col">Type</th>
-                        <th scope="col">Event</th>
+                        <th scope="col">ID <FontAwesomeIcon icon={this.props.filters.id.sort===0 ? faSort : this.props.filters.id.sort===1? faSortUp : faSortDown} onClick={()=>this.sort("id")}/></th>
+                        <th scope="col">Name <FontAwesomeIcon icon={this.props.filters.name.sort===0 ? faSort : this.props.filters.name.sort===1? faSortUp : faSortDown} onClick={()=>this.sort("name")}/></th>
+                        <th scope="col">Coordinates <FontAwesomeIcon icon={this.props.filters.coordinates.sort===0 ? faSort : this.props.filters.coordinates.sort===1? faSortUp : faSortDown} onClick={()=>this.sort("coordinates")}/></th>
+                        <th scope="col">Creation Date <FontAwesomeIcon icon={this.props.filters.date.sort===0 ? faSort : this.props.filters.date.sort===1? faSortUp : faSortDown} onClick={()=>this.sort("date")}/></th>
+                        <th scope="col">Price <FontAwesomeIcon icon={this.props.filters.price.sort===0 ? faSort : this.props.filters.price.sort===1? faSortUp : faSortDown} onClick={()=>this.sort("price")}/></th>
+                        <th scope="col">Comment <FontAwesomeIcon icon={this.props.filters.comment.sort===0 ? faSort : this.props.filters.comment.sort===1? faSortUp : faSortDown} onClick={()=>this.sort("comment")}/></th>
+                        <th scope="col">Type <FontAwesomeIcon icon={this.props.filters.type.sort===0 ? faSort : this.props.filters.type.sort===1? faSortUp : faSortDown} onClick={()=>this.sort("type")}/></th>
+                        <th scope="col">Event <FontAwesomeIcon icon={this.props.filters.event.sort===0 ? faSort : this.props.filters.event.sort===1? faSortUp : faSortDown} onClick={()=>this.sort("event")}/></th>
                     </tr>
                 </thead>
                 <tbody>{result}</tbody>
             </table>
         )
     }
+
+    sort(filterName) {
+        this.props.dispatch({type: "UPDATE_SORT", value:{filterName: filterName}})
+        this.props.dispatch({type: "LOAD_TICKETS", value:{}})
+    }
 }
 
 const mapStateToProps = function(store) {
     return {
         tickets: store.tickets,
+        filters: store.filters
     }
 };
 

@@ -17,6 +17,11 @@ const mainReducer = (state={}, action)=>{
         case ("UPDATE_PAGE_SIZE"): {
             return Object.assign({}, state, {pageSize: action.value.pageSize})
         }
+        case ("UPDATE_SORT"): {
+            let filters = state.filters;
+            filters[action.value.filterName].sort = (filters[action.value.filterName].sort + 1) % 3;
+            return Object.assign({}, state, {filters: filters})
+        }
         case ("SET_ERROR"):{
             return Object.assign({}, state, {error: action.value.error})
         }
