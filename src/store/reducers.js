@@ -3,10 +3,10 @@ const mainReducer = (state={}, action)=>{
         case ("UPDATE_TICKETS"): {
             let result = [];
             let ticket = action.value.ticketList.ticket;
-            if(typeof ticket[Symbol.iterator] === 'function'){
+            if(ticket && typeof ticket[Symbol.iterator] === 'function'){
                 result = ticket;
             }
-            else{
+            else if(ticket){
                 result.push(ticket);
             }
             return Object.assign({}, state, {tickets: result, totalTickets: parseInt(action.value.ticketList.totalTickets._text)});
@@ -20,6 +20,11 @@ const mainReducer = (state={}, action)=>{
         case ("UPDATE_SORT"): {
             let filters = state.filters;
             filters[action.value.filterName].sort = (filters[action.value.filterName].sort + 1) % 3;
+            return Object.assign({}, state, {filters: filters})
+        }
+        case ("UPDATE_FILTER"): {
+            let filters = state.filters;
+            filters[action.value.filterName].filter = action.value.value;
             return Object.assign({}, state, {filters: filters})
         }
         case ("SET_ERROR"):{

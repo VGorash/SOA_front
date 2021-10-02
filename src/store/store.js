@@ -8,11 +8,15 @@ const initialState = {
     currentPage: 1,
     pageSize: 5,
     error: null,
+    editMode: false,
+    currentTicket: null,
     filters:
         {
             id: {filter: null, sort: 0},
             name: {filter: null, sort: 0},
             coordinates: {filter: null, sort: 0},
+            x: {filter: null, sort: 0},
+            y: {filter: null, sort: 0},
             date: {filter: null, sort: 0},
             price: {filter: null, sort: 0},
             comment: {filter: null, sort: 0},

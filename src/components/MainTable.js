@@ -12,19 +12,21 @@ class MainTable extends React.Component{
 
     render(){
         let result = [];
-        for (let ticket of this.props.tickets){
-            result.push(
-                <tr onClick={()=>alert(ticket.id._text)}>
-                    <td>{ticket.id._text}</td>
-                    <td>{ticket.name._text}</td>
-                    <td>x={ticket.coordinates.x._text}, y={ticket.coordinates.y._text}</td>
-                    <td>{ticket.creationDate._text}</td>
-                    <td>{ticket.price ? ticket.price._text : ""}</td>
-                    <td>{ticket.comment ? ticket.comment._text : ""}</td>
-                    <td>{ticket.type ? ticket.type._text : ""}</td>
-                    <td>{ticket.event ? ticket.event.name._text : ""}</td>
-                </tr>
-            )
+        if(this.props.tickets){
+            for (let ticket of this.props.tickets){
+                result.push(
+                    <tr onClick={()=>alert(ticket.id._text)}>
+                        <td>{ticket.id._text}</td>
+                        <td>{ticket.name._text}</td>
+                        <td>x={ticket.coordinates.x._text}, y={ticket.coordinates.y._text}</td>
+                        <td>{ticket.creationDate._text}</td>
+                        <td>{ticket.price ? ticket.price._text : ""}</td>
+                        <td>{ticket.comment ? ticket.comment._text : ""}</td>
+                        <td>{ticket.type ? ticket.type._text : ""}</td>
+                        <td>{ticket.event ? ticket.event.name._text : ""}</td>
+                    </tr>
+                )
+            }
         }
         return(
             <table className="table table-hover">

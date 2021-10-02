@@ -7,7 +7,7 @@ const mainMiddleware = store => next => action => {
         case("LOAD_TICKETS"):{
             let req = new XMLHttpRequest();
             //pagination
-            let pagination = `pageNumber=${store.getState().currentPage}&perPage=${store.getState().pageSize}`;
+            let pagination = `pageNumber=${store.getState().currentPage}&pageSize=${store.getState().pageSize}`;
             //sorting
             let order = "";
             order = applySort(store.getState().filters.id, "id", order);
@@ -18,6 +18,15 @@ const mainMiddleware = store => next => action => {
             order = applySort(store.getState().filters.comment, "comment", order);
             order = applySort(store.getState().filters.type, "type", order);
             order = applySort(store.getState().filters.event, "event", order);
+            //filtering
+            order = applyFilter(store.getState().filters.id, "id", order);
+            order = applyFilter(store.getState().filters.name, "name", order);
+            order = applyFilter(store.getState().filters.x, "coordinates", order, store.getState().filters.y);
+            order = applyFilter(store.getState().filters.date, "creationDate", order);
+            order = applyFilter(store.getState().filters.price, "price", order);
+            order = applyFilter(store.getState().filters.comment, "comment", order);
+            order = applyFilter(store.getState().filters.type, "type", order);
+            order = applyFilter(store.getState().filters.event, "event", order);
             req.open("GET", `${DEFAULT_URL}/tickets?${pagination}${order}`, false);
             req.onload = ()=>{
                 if(req.status === 200){
@@ -42,6 +51,16 @@ const mainMiddleware = store => next => action => {
 function applySort(filter, name, result){
     if(filter.sort !== 0){
         return  result + `&orderBy=${name},${filter.sort === 1? "asc":"desc"}`;
+    }
+    else return result;
+}
+
+function applyFilter(filter, name, result, secondFilter=null){
+    if(filter.filter){
+        if(secondFilter){
+            return result + `&${name}=${filter.filter},${secondFilter.filter}`;
+        }
+        else return  result + `&${name}=${filter.filter}`;
     }
     else return result;
 }

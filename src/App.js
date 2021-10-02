@@ -3,6 +3,7 @@ import React from "react";
 import MainTable from "./components/MainTable";
 import Pagination from "./components/Pagination";
 import {connect} from "react-redux";
+import Filter from "./components/Filter";
 
 class App extends React.Component {
     render() {
@@ -14,6 +15,7 @@ class App extends React.Component {
                 <div className="alert alert-danger" role="alert" hidden={!this.props.error}>
                     {this.props.error}
                 </div>
+                <Filter store={this.props.store}/><br/>
                 <MainTable store={this.props.store}/>
                 <Pagination store={this.props.store}/>
             </div>
