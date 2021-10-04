@@ -1,6 +1,6 @@
 import {DEFAULT_URL} from '../index'
 import {applyMiddleware} from "redux";
-import convert from 'xml-js'
+import {fromXML, toXML} from "../util/ticketUtil";
 
 const mainMiddleware = store => next => action => {
     switch (action.type) {
@@ -30,7 +30,7 @@ const mainMiddleware = store => next => action => {
             req.open("GET", `${DEFAULT_URL}/tickets?${pagination}${order}`, false);
             req.onload = ()=>{
                 if(req.status === 200){
-                    store.dispatch({type: "UPDATE_TICKETS", value: convert.xml2js(req.responseText, {compact: true})})
+                    store.dispatch({type: "UPDATE_TICKETS", value: fromXML(req.responseText)})
                     store.dispatch({type: "SET_ERROR", value: {error: null}})
                 }
                 else{
@@ -39,6 +39,22 @@ const mainMiddleware = store => next => action => {
             };
             req.onerror = ()=>alert("Server is unavailable");
             req.send();
+            return next(action)
+        }
+        case("UPDATE_TICKET"):{
+            let req = new XMLHttpRequest();
+            req.open("PUT", `${DEFAULT_URL}/tickets/${store.getState().currentTicket.id}`, false);
+            req.onload = ()=>{
+                if(req.status === 200){
+                    store.dispatch({type: "LOAD_TICKETS"})
+                }
+                else{
+                    store.dispatch({type: "SET_ERROR", value: {error: req.responseText}})
+                }
+            };
+            req.onerror = ()=>alert("Server is unavailable");
+            req.setRequestHeader("content-type", "text/xml")
+            req.send(toXML(store.getState().currentTicket));
             return next(action)
         }
         default:{

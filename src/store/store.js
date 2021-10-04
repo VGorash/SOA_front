@@ -8,8 +8,22 @@ const initialState = {
     currentPage: 1,
     pageSize: 5,
     error: null,
-    editMode: false,
-    currentTicket: null,
+    mode: 0,
+    currentTicket:
+        {
+            id: "",
+            name: "",
+            coords_x: "",
+            coords_y: "",
+            date: "",
+            price: "",
+            comment: "",
+            type: "",
+            event_id: "",
+            event_name: "",
+            event_date: "",
+            event_type: ""
+        },
     filters:
         {
             id: {filter: null, sort: 0},

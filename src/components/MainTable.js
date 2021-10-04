@@ -2,6 +2,7 @@ import React from "react";
 import {connect} from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons'
+import Table from 'react-bootstrap/Table'
 
 class MainTable extends React.Component{
 
@@ -15,7 +16,7 @@ class MainTable extends React.Component{
         if(this.props.tickets){
             for (let ticket of this.props.tickets){
                 result.push(
-                    <tr onClick={()=>alert(ticket.id._text)}>
+                    <tr onClick={()=>this.handleClick(ticket)}>
                         <td>{ticket.id._text}</td>
                         <td>{ticket.name._text}</td>
                         <td>x={ticket.coordinates.x._text}, y={ticket.coordinates.y._text}</td>
@@ -29,7 +30,7 @@ class MainTable extends React.Component{
             }
         }
         return(
-            <table className="table table-hover">
+            <Table bordered hover>
                 <thead>
                     <tr>
                         <th scope="col">ID <FontAwesomeIcon icon={this.props.filters.id.sort===0 ? faSort : this.props.filters.id.sort===1? faSortUp : faSortDown} onClick={()=>this.sort("id")}/></th>
@@ -43,13 +44,18 @@ class MainTable extends React.Component{
                     </tr>
                 </thead>
                 <tbody>{result}</tbody>
-            </table>
+            </Table>
         )
     }
 
     sort(filterName) {
         this.props.dispatch({type: "UPDATE_SORT", value:{filterName: filterName}})
         this.props.dispatch({type: "LOAD_TICKETS", value:{}})
+    }
+
+    handleClick(ticket){
+        this.props.dispatch({type: "UPDATE_CURRENT_TICKET", value:{ticket: ticket}});
+        this.props.dispatch({type: "SET_MODE", value:{mode: 1}})
     }
 }
 

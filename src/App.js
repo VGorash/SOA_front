@@ -4,6 +4,7 @@ import MainTable from "./components/MainTable";
 import Pagination from "./components/Pagination";
 import {connect} from "react-redux";
 import Filter from "./components/Filter";
+import EditWindow from "./components/EditWindow";
 
 class App extends React.Component {
     render() {
@@ -15,11 +16,18 @@ class App extends React.Component {
                 <div className="alert alert-danger" role="alert" hidden={!this.props.error}>
                     {this.props.error}
                 </div>
+                <EditWindow store={this.props.store}/>
                 <Filter store={this.props.store}/><br/>
                 <MainTable store={this.props.store}/>
+                <button className="btn btn-success" onClick={()=>this.handleAdd()}>Add ticket</button>
                 <Pagination store={this.props.store}/>
             </div>
         );
+    }
+
+    handleAdd(){
+        this.props.dispatch({type: "CLEAR_CURRENT_TICKET"})
+        this.props.dispatch({type: "SET_MODE", value:{mode: 2}})
     }
 }
 

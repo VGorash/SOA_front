@@ -1,3 +1,5 @@
+import {fromTicket} from "../util/ticketUtil";
+
 const mainReducer = (state={}, action)=>{
     switch (action.type){
         case ("UPDATE_TICKETS"): {
@@ -27,8 +29,28 @@ const mainReducer = (state={}, action)=>{
             filters[action.value.filterName].filter = action.value.value;
             return Object.assign({}, state, {filters: filters})
         }
+        case ("UPDATE_CURRENT_TICKET_FIELD"): {
+            let ticket = state.currentTicket;
+            ticket[action.value.fieldName] = action.value.value;
+            return Object.assign({}, state, {currentTicket: ticket})
+        }
+        case ("UPDATE_CURRENT_TICKET"):{
+            return Object.assign({}, state, {currentTicket: fromTicket(action.value.ticket)})
+        }
+        case ("CLEAR_CURRENT_TICKET"): {
+            let ticket = state.currentTicket;
+            for(let field in ticket){
+                if (Object.prototype.hasOwnProperty.call(ticket, field)) {
+                    ticket[field] = "";
+                }
+            }
+            return Object.assign({}, state, {currentTicket: ticket})
+        }
         case ("SET_ERROR"):{
             return Object.assign({}, state, {error: action.value.error})
+        }
+        case ("SET_MODE"):{
+            return Object.assign({}, state, {mode: action.value.mode})
         }
         default: return state;
     }
