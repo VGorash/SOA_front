@@ -84,10 +84,10 @@ class EditWindow extends React.Component{
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="danger" onClick={()=>this.handleClose()}>
+                    <Button variant="danger" disabled={this.props.mode !== 1} onClick={()=>this.handleDelete()}>
                         Delete
                     </Button>
-                    <Button variant="primary" onClick={()=>this.props.dispatch({type: "DELETE_TICKET"})}>
+                    <Button variant="primary" onClick={()=>this.handleSubmit()}>
                         Save Changes
                     </Button>
                 </Modal.Footer>
@@ -101,6 +101,13 @@ class EditWindow extends React.Component{
         if(this.props.mode === 1){
             this.props.dispatch({type: "UPDATE_TICKET"})
         }
+        if(this.props.mode === 2){
+            this.props.dispatch({type: "ADD_TICKET"})
+        }
+        this.props.dispatch({type: "SET_MODE", value:{mode: 0}})
+    }
+    handleDelete(){
+        this.props.dispatch({type: "DELETE_TICKET"})
         this.props.dispatch({type: "SET_MODE", value:{mode: 0}})
     }
     handleChange(e, field){

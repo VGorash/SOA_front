@@ -57,6 +57,36 @@ const mainMiddleware = store => next => action => {
             req.send(toXML(store.getState().currentTicket));
             return next(action)
         }
+        case("DELETE_TICKET"):{
+            let req = new XMLHttpRequest();
+            req.open("DELETE", `${DEFAULT_URL}/tickets/${store.getState().currentTicket.id}`, false);
+            req.onload = ()=>{
+                if(req.status === 200){
+                    store.dispatch({type: "LOAD_TICKETS"})
+                }
+                else{
+                    store.dispatch({type: "SET_ERROR", value: {error: req.responseText}})
+                }
+            };
+            req.onerror = ()=>alert("Server is unavailable");
+            req.send();
+            return next(action)
+        }
+        case("ADD_TICKET"):{
+            let req = new XMLHttpRequest();
+            req.open("POST", `${DEFAULT_URL}/tickets`, false);
+            req.onload = ()=>{
+                if(req.status === 200){
+                    store.dispatch({type: "LOAD_TICKETS"})
+                }
+                else{
+                    store.dispatch({type: "SET_ERROR", value: {error: req.responseText}})
+                }
+            };
+            req.onerror = ()=>alert("Server is unavailable");
+            req.send(toXML(store.getState().currentTicket));
+            return next(action)
+        }
         default:{
             return next(action)
         }
